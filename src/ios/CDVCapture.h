@@ -21,6 +21,7 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 #import <AVFoundation/AVFoundation.h>
 #import <Cordova/CDVPlugin.h>
+#import "RecordingView.h"
 #import "CDVFile.h"
 
 enum CDVCaptureError {
@@ -35,13 +36,13 @@ typedef NSUInteger CDVCaptureError;
 
 @interface CDVImagePicker : UIImagePickerController
 {
-    NSString* callbackid;
+    NSString *callbackid;
     NSInteger quality;
-    NSString* mimeType;
+    NSString *mimeType;
 }
 @property (assign) NSInteger quality;
-@property (copy)   NSString* callbackId;
-@property (copy)   NSString* mimeType;
+@property (copy)   NSString *callbackId;
+@property (copy)   NSString *mimeType;
 
 @end
 
@@ -76,30 +77,15 @@ typedef NSUInteger CDVCaptureError;
  *  is specified there is no UI to the user - recording just stops when the specified
  *  duration is reached.  The UI has been minimized to avoid localization.
  */
-@interface CDVAudioRecorderViewController : UIViewController <AVAudioRecorderDelegate>
+@interface CDVAudioRecorderViewController : UIViewController <AVAudioRecorderDelegate, RecordingViewDelegate>
 {
-    CDVCaptureError errorCode;
-    NSString* callbackId;
-    NSNumber* duration;
-    CDVCapture* captureCommand;
-    UIBarButtonItem* doneButton;
-    UIView* recordingView;
-    UIButton* recordButton;
-    UIImage* recordImage;
-    UIImage* stopRecordImage;
-    UILabel* timerLabel;
-    AVAudioRecorder* avRecorder;
-    AVAudioSession* avSession;
-    CDVPluginResult* pluginResult;
-    NSTimer* timer;
-    BOOL isTimed;
 }
 @property (nonatomic) CDVCaptureError errorCode;
 @property (nonatomic, copy) NSString* callbackId;
 @property (nonatomic, copy) NSNumber* duration;
 @property (nonatomic, strong) CDVCapture* captureCommand;
 @property (nonatomic, strong) UIBarButtonItem* doneButton;
-@property (nonatomic, strong) UIView* recordingView;
+@property (nonatomic, strong) RecordingView* recordingView;
 @property (nonatomic, strong) UIButton* recordButton;
 @property (nonatomic, strong) UIImage* recordImage;
 @property (nonatomic, strong) UIImage* stopRecordImage;
@@ -116,4 +102,6 @@ typedef NSUInteger CDVCaptureError;
 - (void)dismissAudioView:(id)sender;
 - (NSString*)formatTime:(int)interval;
 - (void)updateTime;
+
+- (void)audioRecorderDidFinishRecording:(AVAudioRecorder *)recorder successfully:(BOOL)flag;
 @end
