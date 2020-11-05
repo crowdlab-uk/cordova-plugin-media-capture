@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="RecordingView">
+            <rect key="frame" x="0.0" y="0.0" width="458" height="679"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xec-gb-gNQ" userLabel="Controls">
+                    <rect key="frame" x="0.0" y="597.5" width="458" height="81.5"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JEd-PF-1ge" customClass="RecordButton">
+                            <rect key="frame" x="209.5" y="21.5" width="39" height="38.5"/>
+                            <color key="backgroundColor" red="0.87940848214285716" green="0.0" blue="0.037024810649379326" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="width" secondItem="JEd-PF-1ge" secondAttribute="height" multiplier="1:1" id="gXY-UZ-g1d"/>
+                            </constraints>
+                            <connections>
+                                <action selector="recordButtonPressed:" destination="iN0-l3-epB" eventType="touchUpInside" id="LeG-wk-dxQ"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" red="0.22214006696428568" green="0.22214006696428568" blue="0.22214006696428568" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstItem="JEd-PF-1ge" firstAttribute="centerX" secondItem="Xec-gb-gNQ" secondAttribute="centerX" id="gLc-Ha-1U9"/>
+                        <constraint firstItem="JEd-PF-1ge" firstAttribute="centerY" secondItem="Xec-gb-gNQ" secondAttribute="centerY" id="rC5-7C-Tpw"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kPf-Ns-0ov" customClass="SCSiriWaveformView">
+                    <rect key="frame" x="0.0" y="0.0" width="458" height="597.5"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="waveColor">
+                            <color key="value" red="0.31372549020000001" green="0.68627450980000004" blue="0.63137254899999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8G6-lL-Zbi">
+                    <rect key="frame" x="211" y="60" width="36" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="kPf-Ns-0ov" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="0Kp-aZ-Thb"/>
+                <constraint firstItem="Xec-gb-gNQ" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" multiplier="0.12" id="BLH-WJ-4WO"/>
+                <constraint firstAttribute="top" secondItem="kPf-Ns-0ov" secondAttribute="top" id="CM1-50-YIj"/>
+                <constraint firstItem="Xec-gb-gNQ" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="Fc6-rZ-AdV"/>
+                <constraint firstItem="Xec-gb-gNQ" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="Jze-en-BmV"/>
+                <constraint firstItem="JEd-PF-1ge" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" multiplier="0.085" id="LuI-Hp-FYV"/>
+                <constraint firstItem="8G6-lL-Zbi" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="16" id="fha-Ck-bl5"/>
+                <constraint firstItem="kPf-Ns-0ov" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="j5V-kq-uqt"/>
+                <constraint firstItem="Xec-gb-gNQ" firstAttribute="bottom" secondItem="iN0-l3-epB" secondAttribute="bottom" id="ja1-zb-cjI"/>
+                <constraint firstItem="8G6-lL-Zbi" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="t6b-JD-5Fl"/>
+                <constraint firstItem="kPf-Ns-0ov" firstAttribute="bottom" secondItem="Xec-gb-gNQ" secondAttribute="top" id="wpV-Vd-KUH"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="recordButton" destination="JEd-PF-1ge" id="dgS-rC-CpX"/>
+                <outlet property="timeLabel" destination="8G6-lL-Zbi" id="BLf-hV-uGb"/>
+                <outlet property="waveformView" destination="kPf-Ns-0ov" id="tAS-mR-vjY"/>
+            </connections>
+            <point key="canvasLocation" x="121.73913043478262" y="276.22767857142856"/>
+        </view>
+    </objects>
+</document>
