@@ -112,7 +112,9 @@ xmlns:android="http://schemas.android.com/apk/res/android"
 
         <framework src="CoreGraphics.framework" />
         <framework src="MobileCoreServices.framework" />
-
+        <pods-config ios-min-version="12.0" use-frameworks="true">
+		</pods-config>
+        <pod name="CameraKit-iOS" />
     </platform>
 
     <!-- windows -->
