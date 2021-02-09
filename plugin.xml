@@ -111,6 +111,9 @@ xmlns:android="http://schemas.android.com/apk/res/android"
         <source-file src="src/ios/SCSiriWaveformView.m" />
         <resource-file src="src/ios/WaveView.xib" />
         <resource-file src="src/ios/CDVCapture.bundle" />
+        <resource-file src="src/ios/camera-switch-crowdlab.png" />
+        <resource-file src="src/ios/camera-switch-crowdlab@2x.png" />
+        <resource-file src="src/ios/camera-switch-crowdlab@3x.png" />
 
         <framework src="CoreGraphics.framework" />
         <framework src="MobileCoreServices.framework" />
