@@ -22,12 +22,18 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (strong, nonatomic) CKFPreviewView *previewView;
 @property (strong, nonatomic) IBOutlet UIButton *captureButton;
+@property (strong, nonatomic) NSTimer *timer;
+@property double targetDurationInSeconds;
 @property (weak) IBOutlet UILabel *zoomLabel;
 @property (weak, nonatomic) UIViewController <VideoRecordingViewControllerDelegate> *delegate;
+@property (strong, nonatomic) UILabel *timeLabel;
+@property (strong, nonatomic) NSDate *timerStartDate;
 
 @property (strong, nonatomic) CKFSession *videoSession;
 
 - (VideoRecordingViewController *)initWithCommand:(CDVInvokedUrlCommand *)command duration:(NSNumber *)duration callbackId:(NSString *)callbackId;
+- (void)onTick;
+
 
 @end
 

@@ -234,9 +234,7 @@
 }
 
 - (void)shouldEndRecording {
-  NSLog(@"stop recording");
   [self.ckVideoSession stopRecording];
-  
 }
 
 - (void)shouldSwitchCameras {
@@ -281,6 +279,7 @@
   NSNumber *duration = [options objectForKey:@"duration"];
   NSString *callbackId = command.callbackId;
   VideoRecordingViewController *videoVC = [[VideoRecordingViewController alloc] initWithCommand:command duration:duration callbackId:callbackId];
+  videoVC.targetDurationInSeconds = [duration doubleValue];
   videoVC.delegate = self;
   self.ckVideoSession = [[CKFVideoSession alloc] initWithPosition:CameraPositionBack];
   videoVC.videoSession = self.ckVideoSession;

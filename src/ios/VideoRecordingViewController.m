@@ -14,8 +14,26 @@
 #import <CoreMedia/CoreMedia.h>
 
 
+
+    
+
 @implementation VideoRecordingViewController {
   bool isCameraPositionBack;
+}
+
+- (NSString *)stringFromTimeInterval:(NSTimeInterval)timeInterval {
+  NSDate *endingDate = [NSDate date];
+   
+  NSDate *startingDate = [endingDate dateByAddingTimeInterval:(-timeInterval)];
+  NSCalendar *calendar = NSCalendar.currentCalendar;
+
+
+  NSDateComponents *componentsNow = [calendar components:NSCalendarUnitMinute | NSCalendarUnitSecond fromDate:startingDate toDate:endingDate options:@{}];
+  
+  NSInteger minutes = [componentsNow minute];
+  NSInteger seconds = [componentsNow second];
+            
+  return [NSString stringWithFormat:@"%ld:%02d", (long)minutes, seconds];
 }
 
 - (VideoRecordingViewController *)initWithCommand:(CDVInvokedUrlCommand *)command duration:(NSNumber *)duration callbackId:(NSString *)callbackId {
@@ -42,7 +60,7 @@
   NSLayoutConstraint *previewCenterYConstraint = [NSLayoutConstraint constraintWithItem:self.previewView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0];
   NSLayoutConstraint *previewMinimumWidthConstraint = [NSLayoutConstraint constraintWithItem:self.previewView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:self.view.safeAreaLayoutGuide attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0];
   
-  CGFloat screenProportion = self.view.safeAreaLayoutGuide.layoutFrame.size.height / self.view.safeAreaLayoutGuide.layoutFrame.size.width ;
+  CGFloat screenProportion = self.view.safeAreaLayoutGuide.layoutFrame.size.height / self.view.safeAreaLayoutGuide.layoutFrame.size.width;
   
   NSLayoutConstraint *previewProportionConstraint = [NSLayoutConstraint constraintWithItem:self.previewView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeWidth multiplier:screenProportion constant:0];
   
@@ -78,7 +96,21 @@
   
   UIBarButtonItem *switchButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCamera target:self action:@selector(switchButtonPressed)];
   
- 
+  
+  self.timeLabel = [UILabel new];
+  self.timeLabel.translatesAutoresizingMaskIntoConstraints = NO;
+  
+  [self.timeLabel setBackgroundColor:UIColor.blackColor];
+  [self.timeLabel setTextColor:UIColor.whiteColor];
+  
+  [self.view addSubview:self.timeLabel];
+  
+  NSLayoutConstraint *timeLabelTopConstraint = [NSLayoutConstraint constraintWithItem:self.view.safeAreaLayoutGuide attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.timeLabel attribute:NSLayoutAttributeTop multiplier:1.0 constant:-8];
+  NSLayoutConstraint *timeLabelCenterConstraint = [NSLayoutConstraint constraintWithItem:self.timeLabel attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0];
+  
+  [timeLabelTopConstraint setActive:YES];
+  [timeLabelCenterConstraint setActive:YES];
+  
   self.navigationItem.leftBarButtonItem = switchButton;
   
   //  self.toolbarItems = @[barButton];
@@ -87,12 +119,42 @@
 - (void)recordButtonPressed {
   NSLog(@"recordbutton: %d", self.captureButton.selected);
   bool isRecording = self.captureButton.selected;
+  
+  
   [self.captureButton setSelected:!isRecording];
   if (isRecording) {
     [self.delegate shouldEndRecording];
+    [self.timer invalidate];
   } else {
     [self.delegate shouldStartRecording];
+    self.timer = [NSTimer scheduledTimerWithTimeInterval: 1.0
+                          target: self
+                          selector:@selector(onTick)
+                          userInfo:nil repeats:YES];
+    self.timerStartDate = [NSDate date];
   }
+}
+
+- (void)onTick {
+  NSLog(@"self.timer.fireDate: %@", self.timer.fireDate);
+  NSLog(@"date: %@", [[NSDate date] dateByAddingTimeInterval:self.targetDurationInSeconds]);
+  
+  NSTimeInterval timeRecorded = [[NSDate date] timeIntervalSinceDate: self.timerStartDate];
+  
+  if (self.targetDurationInSeconds == 0) {
+    self.timeLabel.text = [self stringFromTimeInterval:timeRecorded];
+  
+  } else {
+    self.timeLabel.text = [NSString stringWithFormat:@"%@ / %@", [self stringFromTimeInterval:timeRecorded], [self stringFromTimeInterval:self.targetDurationInSeconds]];
+    
+    if ([self.timer.fireDate compare:[self.timerStartDate dateByAddingTimeInterval:self.targetDurationInSeconds]] == NSOrderedDescending) {
+      
+      [self.delegate shouldEndRecording];
+      [self.captureButton setSelected:false];
+      [self.timer invalidate];
+    }
+  }
+  
 }
 
 - (void)switchButtonPressed {
@@ -106,6 +168,13 @@
 
 - (void)viewWillAppear:(BOOL)animated {
   [self.videoSession start];
+  
+  NSLog(@"duration: %f", self.targetDurationInSeconds);
+  if (self.targetDurationInSeconds == 0) {
+    [self.timeLabel setText:@"0:00"];
+  } else {
+    self.timeLabel.text = [NSString stringWithFormat:@"0:00 / %@", [self stringFromTimeInterval:self.targetDurationInSeconds]];
+  }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
