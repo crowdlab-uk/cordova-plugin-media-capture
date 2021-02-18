@@ -11,6 +11,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@interface TimeView : UIView
+@property (strong, nonatomic) UILabel *timeLabel;
+
+- (void)setText:(NSString *)text;
+
+@end
+
 @protocol VideoRecordingViewControllerDelegate
 - (void)shouldStartRecording;
 - (void)shouldEndRecording;
@@ -26,7 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property double targetDurationInSeconds;
 @property (weak) IBOutlet UILabel *zoomLabel;
 @property (weak, nonatomic) UIViewController <VideoRecordingViewControllerDelegate> *delegate;
-@property (strong, nonatomic) UILabel *timeLabel;
+@property (strong, nonatomic) TimeView *timeView;
 @property (strong, nonatomic) NSDate *timerStartDate;
 
 @property (strong, nonatomic) CKFSession *videoSession;

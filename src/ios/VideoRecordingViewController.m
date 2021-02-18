@@ -14,7 +14,40 @@
 #import <CoreMedia/CoreMedia.h>
 
 
+@implementation TimeView {}
 
+- (instancetype)init
+{
+  self = [super init];
+  if (self) {
+    self.layer.cornerRadius = 4;
+    [self setBackgroundColor:UIColor.blackColor];
+    [self setAlpha:0.6];
+    
+    self.timeLabel = [UILabel new];
+    self.timeLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.timeLabel setTextColor:UIColor.whiteColor];
+    [self addSubview:self.timeLabel];
+    
+    NSLayoutConstraint *timeLabelMarginTop = [NSLayoutConstraint constraintWithItem:self.safeAreaLayoutGuide attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.timeLabel attribute:NSLayoutAttributeTop multiplier:1.0 constant:-4];
+    NSLayoutConstraint *timeLabelMarginLeft = [NSLayoutConstraint constraintWithItem:self.safeAreaLayoutGuide attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.timeLabel attribute:NSLayoutAttributeLeft multiplier:1.0 constant:-4];
+    NSLayoutConstraint *timeLabelMarginBottom = [NSLayoutConstraint constraintWithItem:self.safeAreaLayoutGuide attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.timeLabel attribute:NSLayoutAttributeBottom multiplier:1.0 constant:4];
+    NSLayoutConstraint *timeLabelMarginRight = [NSLayoutConstraint constraintWithItem:self.safeAreaLayoutGuide attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.timeLabel attribute:NSLayoutAttributeRight multiplier:1.0 constant:4];
+    
+    [timeLabelMarginTop setActive:YES];
+    [timeLabelMarginLeft setActive:YES];
+    [timeLabelMarginBottom setActive:YES];
+    [timeLabelMarginRight setActive:YES];
+  }
+  return self;
+}
+
+- (void)setText:(NSString *)text {
+  [self.timeLabel setText:text];
+}
+
+
+@end
     
 
 @implementation VideoRecordingViewController {
@@ -33,7 +66,7 @@
   NSInteger minutes = [componentsNow minute];
   NSInteger seconds = [componentsNow second];
             
-  return [NSString stringWithFormat:@"%ld:%02d", (long)minutes, seconds];
+  return [NSString stringWithFormat:@"%ld:%02ld", (long)minutes, (long)seconds];
 }
 
 - (VideoRecordingViewController *)initWithCommand:(CDVInvokedUrlCommand *)command duration:(NSNumber *)duration callbackId:(NSString *)callbackId {
@@ -97,16 +130,13 @@
   UIBarButtonItem *switchButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCamera target:self action:@selector(switchButtonPressed)];
   
   
-  self.timeLabel = [UILabel new];
-  self.timeLabel.translatesAutoresizingMaskIntoConstraints = NO;
+  self.timeView = [TimeView new];
+  self.timeView.translatesAutoresizingMaskIntoConstraints = NO;
+
+  [self.view addSubview:self.timeView];
   
-  [self.timeLabel setBackgroundColor:UIColor.blackColor];
-  [self.timeLabel setTextColor:UIColor.whiteColor];
-  
-  [self.view addSubview:self.timeLabel];
-  
-  NSLayoutConstraint *timeLabelTopConstraint = [NSLayoutConstraint constraintWithItem:self.view.safeAreaLayoutGuide attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.timeLabel attribute:NSLayoutAttributeTop multiplier:1.0 constant:-8];
-  NSLayoutConstraint *timeLabelCenterConstraint = [NSLayoutConstraint constraintWithItem:self.timeLabel attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0];
+  NSLayoutConstraint *timeLabelTopConstraint = [NSLayoutConstraint constraintWithItem:self.view.safeAreaLayoutGuide attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.timeView attribute:NSLayoutAttributeTop multiplier:1.0 constant:-8];
+  NSLayoutConstraint *timeLabelCenterConstraint = [NSLayoutConstraint constraintWithItem:self.timeView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0];
   
   [timeLabelTopConstraint setActive:YES];
   [timeLabelCenterConstraint setActive:YES];
@@ -142,10 +172,10 @@
   NSTimeInterval timeRecorded = [[NSDate date] timeIntervalSinceDate: self.timerStartDate];
   
   if (self.targetDurationInSeconds == 0) {
-    self.timeLabel.text = [self stringFromTimeInterval:timeRecorded];
+    [self.timeView setText:[self stringFromTimeInterval:timeRecorded]];
   
   } else {
-    self.timeLabel.text = [NSString stringWithFormat:@"%@ / %@", [self stringFromTimeInterval:timeRecorded], [self stringFromTimeInterval:self.targetDurationInSeconds]];
+    [self.timeView setText:[NSString stringWithFormat:@"%@ / %@", [self stringFromTimeInterval:timeRecorded], [self stringFromTimeInterval:self.targetDurationInSeconds]]];
     
     if ([self.timer.fireDate compare:[self.timerStartDate dateByAddingTimeInterval:self.targetDurationInSeconds]] == NSOrderedDescending) {
       
@@ -171,9 +201,9 @@
   
   NSLog(@"duration: %f", self.targetDurationInSeconds);
   if (self.targetDurationInSeconds == 0) {
-    [self.timeLabel setText:@"0:00"];
+    [self.timeView setText:@"0:00"];
   } else {
-    self.timeLabel.text = [NSString stringWithFormat:@"0:00 / %@", [self stringFromTimeInterval:self.targetDurationInSeconds]];
+    [self.timeView setText:[NSString stringWithFormat:@"0:00 / %@", [self stringFromTimeInterval:self.targetDurationInSeconds]]];
   }
 }
 
