@@ -49,13 +49,7 @@
 
 - (uint64_t)accessibilityTraits
 {
-  NSString *systemVersion = [[UIDevice currentDevice] systemVersion];
-  
-  if (([systemVersion compare:@"4.0" options:NSNumericSearch] != NSOrderedAscending)) { // this means system version is not less than 4.0
-    return UIAccessibilityTraitStartsMediaSession;
-  }
-  
-  return UIAccessibilityTraitNone;
+  return UIAccessibilityTraitStartsMediaSession;
 }
 
 - (BOOL)prefersStatusBarHidden {
@@ -151,13 +145,7 @@
       // iOS 3.0
       pickerController.mediaTypes = [NSArray arrayWithObjects:(NSString*)kUTTypeImage, nil];
     }
-    
-    if ([pickerController respondsToSelector:@selector(cameraCaptureMode)]){
-      // iOS 4.0
-      pickerController.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
-      pickerController.cameraDevice = UIImagePickerControllerCameraDeviceRear;
-      pickerController.cameraFlashMode = UIImagePickerControllerCameraFlashModeAuto;
-    }
+
     // CDVImagePicker specific property
     pickerController.callbackId = callbackId;
     pickerController.modalPresentationStyle = UIModalPresentationCurrentContext;
@@ -682,25 +670,6 @@
       startRecording();
     }
   }
-}
-
-- (NSString *)resolveImageResource:(NSString *)resource
-{
-  NSString *systemVersion = [[UIDevice currentDevice] systemVersion];
-  BOOL isLessThaniOS4 = ([systemVersion compare:@"4.0" options:NSNumericSearch] == NSOrderedAscending);
-  
-  // the iPad image (nor retina) differentiation code was not in 3.x, and we have to explicitly set the path
-  // if user wants iPhone only app to run on iPad they must remove *~ipad.* images from CDVCapture.bundle
-  if (isLessThaniOS4) {
-    NSString *iPadResource = [NSString stringWithFormat:@"%@~ipad.png", resource];
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad && [UIImage imageNamed:iPadResource]) {
-      return iPadResource;
-    } else {
-      return [NSString stringWithFormat:@"%@.png", resource];
-    }
-  }
-  
-  return resource;
 }
 
 - (id)initWithCommand:(CDVCapture *)theCommand duration:(NSNumber *)theDuration callbackId:(NSString *)theCallbackId
