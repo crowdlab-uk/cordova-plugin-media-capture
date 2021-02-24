@@ -34,7 +34,6 @@ xmlns:android="http://schemas.android.com/apk/res/android"
         <engine name="cordova-android" version=">=6.3.0" />
     </engines>
 
-    <dependency id="cordova-plugin-cocoapod-support"/>
     <dependency id="cordova-plugin-file" version="^6.0.0" />
 
     <js-module src="www/CaptureAudioOptions.js" name="CaptureAudioOptions">
@@ -115,10 +114,11 @@ xmlns:android="http://schemas.android.com/apk/res/android"
 
         <framework src="CoreGraphics.framework" />
         <framework src="MobileCoreServices.framework" />
-        <preference name="deployment-target" value="12.0" />
-        <preference name="pods_ios_min_version" value="12.0" />
-        <preference name="pods_use_frameworks" value="true" />
-        <pod name="CameraKit-iOS" />
+        <podspec>
+            <pods use-frameworks="true">
+                <pod name="CameraKit-iOS" spec="~> 1.2" />
+            </pods>
+        </podspec>
     </platform>
 
     <!-- windows -->

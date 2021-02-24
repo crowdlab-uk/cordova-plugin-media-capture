@@ -37,15 +37,13 @@
   "engines": {
     "cordovaDependencies": {
       ">=1.4.4": {
-        "cordova-ios": ">=4.0.0",
-        "cordova-plugin-cocoapod-support": "1.6.2"
+        "cordova-ios": ">=4.0.0"
       },
       "2.0.0": {
         "cordova-android": ">=6.3.0"
       },
       "4.0.0": {
-        "cordova": ">100",
-        "cordova-plugin-cocoapod-support": "1.6.2"
+        "cordova": ">100"
       }
     }
   },
