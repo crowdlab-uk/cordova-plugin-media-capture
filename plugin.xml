@@ -105,6 +105,8 @@ xmlns:android="http://schemas.android.com/apk/res/android"
         <source-file src="src/ios/RecordButton.m" />
         <header-file src="src/ios/RecordingView.h" />
         <source-file src="src/ios/RecordingView.m" />
+        <header-file src="src/ios/VideoRecordingViewController.h" />
+        <source-file src="src/ios/VideoRecordingViewController.m" />
         <header-file src="src/ios/SCSiriWaveformView.h" />
         <source-file src="src/ios/SCSiriWaveformView.m" />
         <resource-file src="src/ios/WaveView.xib" />
@@ -112,7 +114,11 @@ xmlns:android="http://schemas.android.com/apk/res/android"
 
         <framework src="CoreGraphics.framework" />
         <framework src="MobileCoreServices.framework" />
-
+        <podspec>
+            <pods use-frameworks="true">
+                <pod name="CameraKit-iOS" spec="~> 1.2" />
+            </pods>
+        </podspec>
     </platform>
 
     <!-- windows -->

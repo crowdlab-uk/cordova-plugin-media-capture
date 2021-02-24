@@ -23,6 +23,8 @@
 #import <Cordova/CDVPlugin.h>
 #import "RecordingView.h"
 #import "CDVFile.h"
+#import <CameraKit_iOS/CameraKit_iOS-Swift.h>
+#import "VideoRecordingViewController.h"
 
 enum CDVCaptureError {
     CAPTURE_INTERNAL_ERR = 0,
@@ -46,12 +48,15 @@ typedef NSUInteger CDVCaptureError;
 
 @end
 
-@interface CDVCapture : CDVPlugin <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface CDVCapture : CDVPlugin <UIImagePickerControllerDelegate, UINavigationControllerDelegate, VideoRecordingViewControllerDelegate>
 {
-    CDVImagePicker* pickerController;
+    CDVImagePicker *pickerController;
     BOOL inUse;
 }
 @property BOOL inUse;
+@property CKFVideoSession *ckVideoSession;
+@property (nonatomic, strong) NSString *videoCallbackId;
+
 - (void)captureAudio:(CDVInvokedUrlCommand*)command;
 - (void)captureImage:(CDVInvokedUrlCommand*)command;
 - (CDVPluginResult*)processImage:(UIImage*)image type:(NSString*)mimeType forCallbackId:(NSString*)callbackId;
@@ -63,6 +68,7 @@ typedef NSUInteger CDVCaptureError;
 - (void)imagePickerController:(UIImagePickerController*)picker didFinishPickingMediaWithInfo:(NSDictionary*)info;
 - (void)imagePickerController:(UIImagePickerController*)picker didFinishPickingImage:(UIImage*)image editingInfo:(NSDictionary*)editingInfo;
 - (void)imagePickerControllerDidCancel:(UIImagePickerController*)picker;
+
 
 @end
 
@@ -77,23 +83,23 @@ typedef NSUInteger CDVCaptureError;
  *  is specified there is no UI to the user - recording just stops when the specified
  *  duration is reached.  The UI has been minimized to avoid localization.
  */
-@interface CDVAudioRecorderViewController : UIViewController <AVAudioRecorderDelegate, RecordingViewDelegate>
+@interface CDVAudioRecorderViewController : UIViewController <AVAudioRecorderDelegate, RecordingViewDelegate, VideoRecordingViewControllerDelegate>
 {
 }
 @property (nonatomic) CDVCaptureError errorCode;
-@property (nonatomic, copy) NSString* callbackId;
-@property (nonatomic, copy) NSNumber* duration;
-@property (nonatomic, strong) CDVCapture* captureCommand;
-@property (nonatomic, strong) UIBarButtonItem* doneButton;
-@property (nonatomic, strong) RecordingView* recordingView;
-@property (nonatomic, strong) UIButton* recordButton;
-@property (nonatomic, strong) UIImage* recordImage;
-@property (nonatomic, strong) UIImage* stopRecordImage;
-@property (nonatomic, strong) UILabel* timerLabel;
-@property (nonatomic, strong) AVAudioRecorder* avRecorder;
-@property (nonatomic, strong) AVAudioSession* avSession;
-@property (nonatomic, strong) CDVPluginResult* pluginResult;
-@property (nonatomic, strong) NSTimer* timer;
+@property (nonatomic, copy) NSString *callbackId;
+@property (nonatomic, copy) NSNumber *duration;
+@property (nonatomic, strong) CDVCapture *captureCommand;
+@property (nonatomic, strong) UIBarButtonItem *doneButton;
+@property (nonatomic, strong) RecordingView *recordingView;
+@property (nonatomic, strong) UIButton *recordButton;
+@property (nonatomic, strong) UIImage *recordImage;
+@property (nonatomic, strong) UIImage *stopRecordImage;
+@property (nonatomic, strong) UILabel *timerLabel;
+@property (nonatomic, strong) AVAudioRecorder *avRecorder;
+@property (nonatomic, strong) AVAudioSession *avSession;
+@property (nonatomic, strong) CDVPluginResult *pluginResult;
+@property (nonatomic, strong) NSTimer *timer;
 @property (nonatomic) BOOL isTimed;
 
 - (id)initWithCommand:(CDVPlugin*)theCommand duration:(NSNumber*)theDuration callbackId:(NSString*)theCallbackId;
