@@ -115,6 +115,7 @@ xmlns:android="http://schemas.android.com/apk/res/android"
 
         <framework src="CoreGraphics.framework" />
         <framework src="MobileCoreServices.framework" />
+        <preference name="deployment-target" value="12.0" />
         <preference name="pods_ios_min_version" value="12.0" />
         <preference name="pods_use_frameworks" value="true" />
         <pod name="CameraKit-iOS" />
